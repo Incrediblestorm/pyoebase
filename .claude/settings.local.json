@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/gzelt/dev/oebase -maxdepth 3 \\\\\\( -name \"Containerfile\" -o -name \"Dockerfile\" \\\\\\) 2>/dev/null | grep -v pyoebase)",
+      "Read(//Users/gzelt/dev/oebase/**)",
+      "Bash(pip3 --version)",
+      "Bash(python3 -c \"import sys; print\\(sys.prefix\\)\")",
+      "Read(//usr/dlc/**)",
+      "Bash(env)",
+      "Bash(proutil --help)",
+      "Bash(prostrct help *)",
+      "Bash(proutil /usr/dlc/empty -C help)",
+      "Bash(prostrct)",
+      "Bash(prostrct create *)",
+      "Bash(proutil /usr/dlc/demo -C list)",
+      "Bash(_progres -db /usr/dlc/demo -b -p _dmpschma.p -param \"/tmp/demo_schema.df\")",
+      "Read(//tmp/**)",
+      "Bash(_progres -1 -db /usr/dlc/demo -b -p _dmpschma.p -param \"/tmp/demo_schema.df\")",
+      "Bash(cp /usr/dlc/demo.* /tmp/)",
+      "Bash(_progres -1 -db /tmp/demo -b -p _dmpschma.p -param \"/tmp/demo_schema.df\")",
+      "Bash(cp /usr/dlc/sports2000.db /tmp/)",
+      "Bash(cp /usr/dlc/sports2000.d1 /tmp/)",
+      "Bash(cp /usr/dlc/sports2000.b1 /tmp/)",
+      "Bash(_progres -1 -db /tmp/sports2000 -b -p _dmpschma.p -param \"/tmp/sports2000_schema.df\")",
+      "Read(//root/.claude/projects/**)",
+      "Bash(xargs ls -t)",
+      "Bash(python3 -)",
+      "Bash(cp /usr/dlc/sports2000*.d* /usr/dlc/sports2000*.b* /tmp/)",
+      "Bash(xargs -I{} basename {} .r)",
+      "Bash(proutil /tmp/sports2000 -C dump /tmp/sports2000_dump.df)",
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p _dict.r)",
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p u-dump.p)",
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema.p)",
+      "Bash(PROPATH=/usr/dlc/tty:. _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema.p)",
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p prodict/prodict.p)",
+      "Bash(jar tf *)",
+      "Bash(prolib /usr/dlc/tty/prodict.pl -list)",
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema2.p)",
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema3.p)"
+    ]
+  }
+}

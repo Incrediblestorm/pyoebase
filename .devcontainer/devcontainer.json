@@ -1,0 +1,12 @@
+{
+  "name": "pyoebase",
+  "image": "docker.io/incrediblestorm/pyoebase:12.2.13",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "remoteUser": "root",
+  "runArgs": ["--platform", "linux/amd64"],
+  "mounts": [
+    "source=${localEnv:HOME}/.claude,target=/root/.claude,type=bind"
+  ]
+
+}

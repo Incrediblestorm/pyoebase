@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: pyoe
+Version: 0.1.0
+Summary: Python utilities for Progress OpenEdge database schema management
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3.9
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
