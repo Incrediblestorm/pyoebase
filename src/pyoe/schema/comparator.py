@@ -50,7 +50,8 @@ def make_delta(
         Comma-separated list of table names to include, or ``"ALL"``
         (default) to compare every user table.
     codepage:
-        Output codepage.  Defaults to the database's native codepage.
+        Output codepage (e.g. ``"UTF-8"``).  Defaults to the ``-cpstream``
+        value in ``$DLC/startup.pf``.
     dlc:
         OpenEdge installation directory.
     timeout:
@@ -81,6 +82,8 @@ def make_delta(
 
     runner = OERunner(dlc=dlc)
     # current_db → DICTDB (first), desired_db → DICTDB2 (second)
+    if not codepage:
+        codepage = runner.cpstream
     param = f"{tables}|{output_file}|{codepage}"
     runner.run_abl(
         _ABL_DUMP_INC,

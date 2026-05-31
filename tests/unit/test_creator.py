@@ -46,6 +46,7 @@ class TestCreateEmptyDb:
 
         with patch("pyoe.db.creator.OERunner") as MockRunner:
             instance = MockRunner.return_value
+            instance.dlc = fake_dlc
             create_empty_db(tmp_path / "newdb", dlc=str(fake_dlc))
             instance.run_bin.assert_called_once()
             args = instance.run_bin.call_args

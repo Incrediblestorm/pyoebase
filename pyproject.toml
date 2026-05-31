@@ -6,15 +6,35 @@ build-backend = "setuptools.build_meta"
 name = "pyoe"
 version = "0.1.0"
 description = "Python utilities for Progress OpenEdge database schema management"
+readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
+authors = [
+    {name = "incrediblestorm"},
+]
+keywords = ["openedge", "progress", "database", "schema", "df"]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
+[project.urls]
+Homepage = "https://github.com/incrediblestorm/pyoe"
+Repository = "https://github.com/incrediblestorm/pyoe"
+Issues = "https://github.com/incrediblestorm/pyoe/issues"
+
 [project.optional-dependencies]
-dev = ["pytest>=7", "pytest-cov"]
+dev = ["pytest>=7", "pytest-cov", "build"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

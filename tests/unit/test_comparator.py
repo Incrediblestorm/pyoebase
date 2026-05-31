@@ -33,7 +33,7 @@ class TestMakeDelta:
             make_delta(cur, des, tmp_path / "delta.df")
             instance.run_abl.assert_called_once()
             call_args = instance.run_abl.call_args
-            db_paths = call_args[1].get("db_paths", call_args[0][1])
+            db_paths = call_args.kwargs["db_paths"]
             assert len(db_paths) == 2
             assert any("current" in str(p) for p in db_paths)
             assert any("desired" in str(p) for p in db_paths)
@@ -45,7 +45,7 @@ class TestMakeDelta:
             instance = MockRunner.return_value
             make_delta(cur, des, tmp_path / "delta.df")
             call_args = instance.run_abl.call_args
-            db_paths = call_args[1].get("db_paths", call_args[0][1])
+            db_paths = call_args.kwargs["db_paths"]
             assert "current" in str(db_paths[0])
 
     def test_creates_empty_file_when_run_abl_succeeds(self, tmp_path):

@@ -23,11 +23,7 @@ class TestDumpSchema:
             instance = MockRunner.return_value
             dump_schema(tmp_path / "mydb", out)
             instance.run_abl.assert_called_once()
-            _, kwargs = instance.run_abl.call_args
-            # db_paths should contain the db stem
-            db_paths = instance.run_abl.call_args[1].get(
-                "db_paths", instance.run_abl.call_args[0][1]
-            )
+            db_paths = instance.run_abl.call_args.kwargs["db_paths"]
             assert any("mydb" in str(p) for p in db_paths)
 
     def test_creates_parent_dirs(self, tmp_path):

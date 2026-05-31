@@ -14,6 +14,7 @@ from typing import Optional
 from .._oe import OERunner, _ABL_LOAD_DF
 from ..db.creator import create_empty_db
 from ..exceptions import OEDBNotFoundError, OESchemaError
+from .comparator import make_delta
 
 
 def apply_df(
@@ -123,9 +124,6 @@ def sync_schema(
     OERuntimeError
         If any OpenEdge batch process exits non-zero.
     """
-    # Deferred import to avoid circular dependency
-    from .comparator import make_delta
-
     target_db = Path(target_db).with_suffix("")
     if not target_db.with_suffix(".db").exists():
         raise OEDBNotFoundError(f"Target database not found: {target_db}.db")

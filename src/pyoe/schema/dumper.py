@@ -31,8 +31,8 @@ def dump_schema(
         Comma-separated list of table names to dump, or ``"ALL"`` (default)
         to dump every user table.
     codepage:
-        Output codepage (e.g. ``"UTF-8"``).  Defaults to the database's
-        native codepage.
+        Output codepage (e.g. ``"UTF-8"``).  Defaults to the ``-cpstream``
+        value in ``$DLC/startup.pf``.
     dlc:
         OpenEdge installation directory.
     timeout:
@@ -58,6 +58,8 @@ def dump_schema(
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     runner = OERunner(dlc=dlc)
+    if not codepage:
+        codepage = runner.cpstream
     param = f"{tables}|{output_file}|{codepage}"
     runner.run_abl(
         _ABL_DUMP_DF,

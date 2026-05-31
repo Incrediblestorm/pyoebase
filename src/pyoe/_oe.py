@@ -151,6 +151,22 @@ class OERunner:
     # Internal
     # ------------------------------------------------------------------
 
+    @property
+    def cpstream(self) -> str:
+        """Return the -cpstream value from $DLC/startup.pf, or '' if absent."""
+        pf = self.dlc / "startup.pf"
+        try:
+            for line in pf.read_text().splitlines():
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                parts = line.split()
+                if len(parts) >= 2 and parts[0] == "-cpstream":
+                    return parts[1]
+        except OSError:
+            pass
+        return ""
+
     def _validate(self) -> None:
         progres = self.dlc / "bin" / "_progres"
         if not progres.exists():

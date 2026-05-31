@@ -254,18 +254,13 @@ class DFParser:
     # ------------------------------------------------------------------
 
     def _handle_field(self, schema: Schema, verb: str, rest: str, attrs: list[str]) -> None:
-        # "FieldName" OF "TableName" AS datatype
-        m = re.match(r'"?([^"]+)"?\s+OF\s+"?([^"]+)"?\s+AS\s+(\S+)', rest, re.IGNORECASE)
-        if not m:
-            return
-        fname = m.group(1)
-        tname = m.group(2).upper()
-        dtype = m.group(3).upper()
-
+        # RENAME/DELETE don't have AS datatype — handle them first.
         if verb == "DELETE":
-            tbl = schema.tables.get(tname)
-            if tbl:
-                tbl.fields.pop(fname.upper(), None)
+            m = re.match(r'"?([^"]+)"?\s+OF\s+"?([^"]+)"?', rest, re.IGNORECASE)
+            if m:
+                tbl = schema.tables.get(m.group(2).upper())
+                if tbl:
+                    tbl.fields.pop(m.group(1).upper(), None)
             return
 
         if verb == "RENAME":
@@ -282,6 +277,14 @@ class DFParser:
                         fld.name = new_name
                         tbl.fields[new_name.upper()] = fld
             return
+
+        # ADD / UPDATE — require "FieldName" OF "TableName" AS datatype
+        m = re.match(r'"?([^"]+)"?\s+OF\s+"?([^"]+)"?\s+AS\s+(\S+)', rest, re.IGNORECASE)
+        if not m:
+            return
+        fname = m.group(1)
+        tname = m.group(2).upper()
+        dtype = m.group(3).upper()
 
         tbl = schema.tables.setdefault(tname, SchemaTable(name=tname))
         fkey = fname.upper()

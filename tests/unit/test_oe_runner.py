@@ -65,6 +65,35 @@ class TestOERunnerBaseEnv:
             assert env.get("PROTERMCAP") == str(tmp_path / "protermcap")
 
 
+class TestOERunnerCpstream:
+    def _make_runner(self, tmp_path):
+        (tmp_path / "bin").mkdir()
+        (tmp_path / "bin" / "_progres").touch()
+        (tmp_path / "tty").mkdir()
+        return OERunner(dlc=str(tmp_path))
+
+    def test_reads_cpstream_from_startup_pf(self, tmp_path):
+        runner = self._make_runner(tmp_path)
+        (tmp_path / "startup.pf").write_text("-cpstream UTF-8\n")
+        assert runner.cpstream == "UTF-8"
+
+    def test_ignores_comments_and_other_params(self, tmp_path):
+        runner = self._make_runner(tmp_path)
+        (tmp_path / "startup.pf").write_text(
+            "# comment\n-cpinternal ISO8859-1\n-cpstream ISO8859-1\n"
+        )
+        assert runner.cpstream == "ISO8859-1"
+
+    def test_returns_empty_string_when_startup_pf_missing(self, tmp_path):
+        runner = self._make_runner(tmp_path)
+        assert runner.cpstream == ""
+
+    def test_returns_empty_string_when_cpstream_not_in_file(self, tmp_path):
+        runner = self._make_runner(tmp_path)
+        (tmp_path / "startup.pf").write_text("-cpinternal ISO8859-1\n")
+        assert runner.cpstream == ""
+
+
 class TestOERunnerRunBin:
     def _make_runner(self, tmp_path):
         (tmp_path / "bin").mkdir()
