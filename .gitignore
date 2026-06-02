@@ -31,3 +31,20 @@ env/
 
 # Dev artifacts
 yes
+
+# Compiled binaries
+*.exe
+*.out
+*.bin
+*.so
+*.dll
+*.dylib
+compare_schemas/compare_schemas
+compare_schemas/compare_schemas_v2
+
+# OpenEdge compiled/binary files
+*.e
+
+# OpenEdge trace/lock files
+procore.*
+protrace.*
