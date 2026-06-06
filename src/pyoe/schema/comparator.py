@@ -1,15 +1,15 @@
 """Compare two OpenEdge database schemas and produce a delta .df file.
 
-The comparison is performed by OpenEdge itself via ``prodict/dump_inc.r``
-which understands all schema nuances (codepage, area assignments, etc.).
+The comparison uses ``prodict/dump_inc.p`` via its persistent-handle API
+(the only supported way to call it non-interactively on OE 12.x).
 
-Connection convention used by dump_inc.r
+Connection convention used by dump_inc.p
 -----------------------------------------
-* ``DICTDB``  – the **current** database (the one to be altered)
-* ``DICTDB2`` – the **desired** database (the target schema)
+* ``DICTDB``  – the **desired** schema (what you want it to become)
+* ``DICTDB2`` – the **current** database (what you have now)
 
-The generated ``.df`` contains the statements needed to bring *DICTDB*
-in line with *DICTDB2*.
+The generated ``.df`` contains the statements needed to bring *DICTDB2* (current)
+in line with *DICTDB* (desired).
 """
 
 from __future__ import annotations
@@ -81,13 +81,14 @@ def make_delta(
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     runner = OERunner(dlc=dlc)
-    # current_db → DICTDB (first), desired_db → DICTDB2 (second)
     if not codepage:
         codepage = runner.cpstream
-    param = f"{tables}|{output_file}|{codepage}"
+    # dump_inc.p convention: DICTDB=desired (command-line -db), DICTDB2=current (CONNECT inside ABL).
+    # The delta contains changes to apply to DICTDB2 (current) to make it look like DICTDB (desired).
+    param = f"{current_db}|{output_file}|{codepage}"
     runner.run_abl(
         _ABL_DUMP_INC,
-        db_paths=[current_db, desired_db],
+        db_paths=[desired_db],
         param=param,
         timeout=timeout,
     )

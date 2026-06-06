@@ -25,7 +25,8 @@ class TestMakeDelta:
         with pytest.raises(OEDBNotFoundError):
             make_delta(tmp_path / "current", tmp_path / "desired", tmp_path / "out.df")
 
-    def test_calls_run_abl_with_two_dbs(self, tmp_path):
+    def test_calls_run_abl_with_desired_db_only(self, tmp_path):
+        # desired_db is DICTDB (command-line -db); current_db is DICTDB2 via param
         cur, des = self._setup_dbs(tmp_path)
 
         with patch("pyoe.schema.comparator.OERunner") as MockRunner:
@@ -34,19 +35,19 @@ class TestMakeDelta:
             instance.run_abl.assert_called_once()
             call_args = instance.run_abl.call_args
             db_paths = call_args.kwargs["db_paths"]
-            assert len(db_paths) == 2
-            assert any("current" in str(p) for p in db_paths)
-            assert any("desired" in str(p) for p in db_paths)
+            assert len(db_paths) == 1
+            assert "desired" in str(db_paths[0])
 
-    def test_current_db_is_first(self, tmp_path):
+    def test_current_db_in_param(self, tmp_path):
+        # current_db path must appear in the param string so ABL can CONNECT it as DICTDB2
         cur, des = self._setup_dbs(tmp_path)
 
         with patch("pyoe.schema.comparator.OERunner") as MockRunner:
             instance = MockRunner.return_value
             make_delta(cur, des, tmp_path / "delta.df")
             call_args = instance.run_abl.call_args
-            db_paths = call_args.kwargs["db_paths"]
-            assert "current" in str(db_paths[0])
+            param = call_args.kwargs.get("param", "")
+            assert "current" in param
 
     def test_creates_empty_file_when_run_abl_succeeds(self, tmp_path):
         cur, des = self._setup_dbs(tmp_path)

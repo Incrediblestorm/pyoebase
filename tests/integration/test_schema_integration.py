@@ -54,22 +54,20 @@ class TestApplyDfIntegration:
         db = create_empty_db(tmp_path / "target", dlc=DLC).with_suffix("")
         df_content = """\
 ADD TABLE "TestTable"
-  AREA "Data Area"
-  LABEL "Test Table"
-  TABLE-TYPE T
+  AREA "Schema Area"
   DUMP-NAME "testtable"
 
 ADD FIELD "Id" OF "TestTable" AS integer
   FORMAT ">>>>>>9"
   INITIAL "0"
   ORDER 10
-  POSITION 1
+  POSITION 2
+  MAX-WIDTH 4
 
 ADD INDEX "Id" ON "TestTable"
-  AREA "Index Area"
-  PRIMARY
+  AREA "Schema Area"
   UNIQUE
-  ACTIVE
+  PRIMARY
   INDEX-FIELD "Id" ASCENDING
 """
         df_file = tmp_path / "test.df"
@@ -104,9 +102,9 @@ class TestMakeDeltaIntegration:
 
         df_file = tmp_path / "new_table.df"
         df_file.write_text(
-            'ADD TABLE "NewTable"\n  AREA "Data Area"\n  TABLE-TYPE T\n\n'
-            'ADD FIELD "Id" OF "NewTable" AS integer\n  ORDER 10\n\n'
-            'ADD INDEX "Id" ON "NewTable"\n  PRIMARY\n  UNIQUE\n  ACTIVE\n'
+            'ADD TABLE "NewTable"\n  AREA "Schema Area"\n  DUMP-NAME "newtable"\n\n'
+            'ADD FIELD "Id" OF "NewTable" AS integer\n  ORDER 10\n  POSITION 2\n  MAX-WIDTH 4\n\n'
+            'ADD INDEX "Id" ON "NewTable"\n  AREA "Schema Area"\n  UNIQUE\n  PRIMARY\n'
             '  INDEX-FIELD "Id" ASCENDING\n'
         )
         apply_df(db2, df_file, dlc=DLC)
@@ -129,9 +127,9 @@ class TestSyncSchemaIntegration:
 
         desired_df = tmp_path / "desired.df"
         desired_df.write_text(
-            'ADD TABLE "SyncedTable"\n  AREA "Data Area"\n  TABLE-TYPE T\n\n'
-            'ADD FIELD "Id" OF "SyncedTable" AS integer\n  ORDER 10\n\n'
-            'ADD INDEX "Id" ON "SyncedTable"\n  PRIMARY\n  UNIQUE\n  ACTIVE\n'
+            'ADD TABLE "SyncedTable"\n  AREA "Schema Area"\n  DUMP-NAME "synced"\n\n'
+            'ADD FIELD "Id" OF "SyncedTable" AS integer\n  ORDER 10\n  POSITION 2\n  MAX-WIDTH 4\n\n'
+            'ADD INDEX "Id" ON "SyncedTable"\n  AREA "Schema Area"\n  UNIQUE\n  PRIMARY\n'
             '  INDEX-FIELD "Id" ASCENDING\n'
         )
         sync_schema(target, desired_df, dlc=DLC)
@@ -145,9 +143,9 @@ class TestSyncSchemaIntegration:
         target = create_empty_db(tmp_path / "target", dlc=DLC).with_suffix("")
         desired_df = tmp_path / "desired.df"
         desired_df.write_text(
-            'ADD TABLE "T"\n  AREA "Data Area"\n  TABLE-TYPE T\n\n'
-            'ADD FIELD "Id" OF "T" AS integer\n  ORDER 10\n\n'
-            'ADD INDEX "Id" ON "T"\n  PRIMARY\n  UNIQUE\n  ACTIVE\n'
+            'ADD TABLE "T"\n  AREA "Schema Area"\n  DUMP-NAME "t"\n\n'
+            'ADD FIELD "Id" OF "T" AS integer\n  ORDER 10\n  POSITION 2\n  MAX-WIDTH 4\n\n'
+            'ADD INDEX "Id" ON "T"\n  AREA "Schema Area"\n  UNIQUE\n  PRIMARY\n'
             '  INDEX-FIELD "Id" ASCENDING\n'
         )
         sync_schema(target, desired_df, dlc=DLC)

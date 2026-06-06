@@ -36,7 +36,9 @@
       "Bash(jar tf *)",
       "Bash(prolib /usr/dlc/tty/prodict.pl -list)",
       "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema2.p)",
-      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema3.p)"
+      "Bash(PROPATH=/usr/dlc/tty _progres -1 -db /tmp/sports2000 -b -p /tmp/dumpschema3.p)",
+      "Bash(python -m pytest tests/unit/ -v)",
+      "Bash(python3 -m pytest tests/unit/ -v)"
     ]
   }
 }
